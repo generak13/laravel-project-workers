@@ -41,7 +41,7 @@ class WorkersTest extends TestCase
                 'resume' => 'Secret!',
                 'birthday' => '1992-08-13'
             ]);
-        $response->assertStatus(200);
+        $response->assertStatus(201 );
 
         $data = $response->json();
 
@@ -105,11 +105,7 @@ class WorkersTest extends TestCase
 
         if($workers) {
             $response = $this->json('DELETE', '/workers/' . $workers[0]['id']);
-            $response->assertStatus(200);
-
-            $data = $response->json();
-
-            $this->assertTrue($data['success']);
+            $response->assertStatus(204);
         } else {
             throw new Exception('Workers not found');
         }

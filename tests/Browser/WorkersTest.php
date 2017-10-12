@@ -124,9 +124,7 @@ class WorkersTest extends DuskTestCase
             $browser
                 ->visit('/workers')
                 ->click('.delete-worker')
-
-                ->assertSee('Worker was retired!')
-                ->assertSee('Back to workers list');
+                ->assertPathIs('/workers');
         });
     }
 }

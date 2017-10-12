@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\WorkerRequest;
 use Illuminate\Http\Request;
 use App\Worker;
+use Illuminate\Http\Response;
 
 class WorkersController extends Controller
 {
@@ -39,8 +40,11 @@ class WorkersController extends Controller
     public function store(WorkerRequest $request)
     {
         $worker = Worker::create($request->toArray());
+        $uri = '/workers/' . $worker->id;
 
-        return response()->handle('workers.saved', ['worker' => $worker]);
+        return response()
+            ->handle('workers.saved', ['worker' => $worker, 'uri' => $uri], Response::HTTP_CREATED)
+            ->header('Location', $uri);
     }
 
     /**
@@ -72,9 +76,9 @@ class WorkersController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param WorkerRequest|Request $request
+     * @param  int $id
+     * @return Response
      */
     public function update(WorkerRequest $request, $id)
     {
@@ -95,6 +99,6 @@ class WorkersController extends Controller
         $worker = Worker::findOrFail($id);
         $worker->delete();
 
-        return response()->handle('workers.removed', []);
+        return response()->handle('workers.removed', [], Response::HTTP_NO_CONTENT);
     }
 }
